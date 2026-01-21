@@ -166,7 +166,7 @@ void Setup(AlxWindow* w){
 
 void Update(AlxWindow* w){
     TransformedView_HandlePanZoom(&tv,window.Strokes,(Vec2){ GetMouse().x,GetMouse().y });
-	ScreenRect = TransformedView_Rect(&tv,(Rect){ 0.0f,0.0f,GetWidth(),GetHeight() });
+	ScreenRect = TransformedView_ScreenWorldRect(&tv,(Rect){ 0.0f,0.0f,GetWidth(),GetHeight() });
     
     if(Stroke(ALX_MOUSE_L).PRESSED){
         Focused = NULL;
