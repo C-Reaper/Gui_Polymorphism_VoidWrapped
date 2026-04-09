@@ -143,7 +143,7 @@ void SSpline_Render(SSpline* r){
     Vec2 p3 = TransformedView_WorldScreenPos(&tv,r->p3);
     Vec2 l = TransformedView_WorldScreenLength(&tv,(Vec2){ 20.0f,20.0f });
 	
-    BCurve_Render(WINDOW_STD_ARGS,(BCurve){ p1,p2,p3 },RED);
+    BCurve_Render(WINDOW_STD_ARGS,(BCurve[]){ BCurve_New(p1,p2,p3) },RED);
     RenderRect(p1.x-l.x*0.5f,p1.y-l.y*0.5f,l.x,l.y,GREEN);
     RenderRect(p2.x-l.x*0.5f,p2.y-l.y*0.5f,l.x,l.y,GREEN);
     RenderRect(p3.x-l.x*0.5f,p3.y-l.y*0.5f,l.x,l.y,GREEN);
@@ -251,6 +251,7 @@ void Update(AlxWindow* w){
         Branch_Set(t.Root,(Entry[]){ Entry_New("Objects",NULL,0) },sizeof(Entry));
         for(int i = 0;i<Objects.size;i++){
             Shape* s = (Shape*)Vector_Get(&Objects,i);
+            
             if(s->Type==SHAPE_RECT){
                 SRect* o = (SRect*)s->Memory;
                 String str = String_Format("%f %f %f %f",o->p.x,o->p.y,o->e.x,o->e.y);
@@ -297,9 +298,8 @@ void Update(AlxWindow* w){
         s->Render(s->Memory);
     }
 
-    String str = String_Format("| Offset: %f,%f - Zoom: %f,%f |",tv.Offset.x,tv.Offset.y,tv.Scale.x,tv.Scale.y);
-	RenderCStrSize(str.Memory,str.size,0,0,WHITE);
-	String_Free(&str);
+    CStr_RenderAlxFontf(WINDOW_STD_ARGS,GetAlxFont(),0.0f,0.0f,WHITE,"Offset: %f,%f",tv.Offset.x,tv.Offset.y);
+    CStr_RenderAlxFontf(WINDOW_STD_ARGS,GetAlxFont(),0.0f,GetAlxFont()->CharSizeY,WHITE,"Scale:  %f,%f",tv.Scale.x,tv.Scale.y);
 }
 
 void Delete(AlxWindow* w){
